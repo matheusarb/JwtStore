@@ -19,12 +19,19 @@ public partial class Email : ValueObject
 
         if(!EmailRegex().IsMatch(Address))
             throw new Exception("Email inválido.");
-
-
     }
 
     public string Address { get; }
     public string Hash => Address.ToBase64();
+
+    public static implicit operator string(Email email)
+        => email.ToString();
+
+    public static implicit operator Email(string address)
+        => new Email(address);
+
+    public override string ToString()
+        => Address;
 
     [GeneratedRegex(Pattern)]
     private static partial Regex EmailRegex();
